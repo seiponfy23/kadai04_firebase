@@ -1,0 +1,24 @@
+/* style.css */
+.custom-h1 {
+    font-size: 16px;
+    width: 50%;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    margin: 0 auto;
+    word-wrap: break-word; 
+}
+
+.custom-h1:nth-child(odd) {
+    background: rgb(165 180 252);
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.custom-h1:nth-child(even) {
+    background: rgb(224 231 255);
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+

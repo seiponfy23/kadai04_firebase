@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="./css/output.css">
+    <title>v3_課題提出用（readmeマージ中）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+  <header class="text-gray-600 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+        <nav class="flex lg:w-2/5 flex-wrap items-center text-base md:ml-auto">
+
+        </nav>
+        <a class="flex order-first lg:order-none lg:w-1/5 title-font font-medium items-center text-gray-900 lg:items-center lg:justify-center mb-4 md:mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="ml-3 text-xl">readmeへるぷみー
+        </span>
+        </a>
+        <div class="lg:w-2/5 inline-flex lg:justify-end ml-5 lg:ml-0">
+        </div>
+    </div>
+  </header>
+  <main>
+    <section class="text-gray-600 body-font relative">
+        <div class="container px-5 py-10 mx-auto">
+            <div class="flex flex-col text-center w-full mb-12">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">もしかして「苦労した点」探しで消耗してるの？</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base">困ったことをメモして今後に活かすツールってなかったのよね</p>
+            </div>
+            <div class="lg:w-1/2 md:w-2/3 mx-auto">
+            <div class="flex flex-wrap -m-2">
+                <div class="p-2 w-1/2">
+                <div class="relative">
+                    <label for="key" class="leading-7 text-sm text-gray-600">TITLE（概要）</label>
+                    <input type="text" id="uname" name="TITLE" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                </div>
+                <div class="p-2 w-1/2">
+                <div class="relative">
+                    <label for="url" class="leading-7 text-sm text-gray-600">URL（リンク）</label>
+                    <input type="url" id="url" name="URL" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                </div>
+                </div>
+                <div class="p-2 w-full">
+                <div class="relative">
+                    <label for="memo" class="leading-7 text-sm text-gray-600">DETAIL（詳細）</label>
+                    <textarea id="text" name="DETAIL" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                </div>
+                </div>
+                <div class="flex justify-center p-2 w-full">
+                <button id="send" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">送信</button>
+                <button id="out" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">ログアウト</button>
+
+                </div>
+            </div>
+            </div>
+        </div>
+        </section>
+        <div id="output" class="bg-amber-50 pt-8 pb-4 mb-24 ml-24 mr-24" style="overflow: auto;height: 400px;"></div>
+
+</main>
+    <!-- コンテンツ表示画面 -->
+    <!-- <div>
+        <div>
+            課題：<input type="text" id="uname">
+        </div>
+        <div>
+            URL：<input type="url" id="url">
+        </div>
+        <div>
+            <textarea id="text" cols="30" rows="10"></textarea>
+            <button id="send">送信</button>
+        </div>
+        <div id="output" style="overflow: auto;height: 300px;"></div>
+        
+    </div> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved }
+            from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNsgbwX2AsrpsmTJo1Z9Ei1hIEDa_PKaw",
+            authDomain: "kadai-685bd.firebaseapp.com",
+            projectId: "kadai-685bd",
+            storageBucket: "kadai-685bd.appspot.com",
+            messagingSenderId: "667414820781",
+            appId: "1:667414820781:web:17a1490d537aa640025324"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app); //RealtimeDBに接続
+        const dbRef = ref(db, "chat"); //RealtimeDB内の"chat"を使う
+
+//データ登録(Enter)
+$("#text").on("keydown", function(e) {
+  if (e.keyCode === 13) { // エンターキーのキーコードは13
+    e.preventDefault(); // デフォルトのエンターキーの動作をキャンセル
+    $("#send").trigger("click"); // 送信ボタンをクリックするイベントを発火
+    }
+});
+
+        // データ登録(Click)
+        $("#send").on("click",function(){
+            const uname=$("#uname").val();
+            const url=$("#url").val();
+            const text=$("#text").val();
+            // alert(uname+text+url);
+        });
+
+        $("#send").on("click",function(){
+            const msg={
+                uname:$("#uname").val(),
+                url:$("#url").val(),
+                text:$("#text").val()
+            }
+            const newPostRef=push(dbRef);
+            set(newPostRef,msg);
+
+            // 文字を空っぽにする
+            $("#uname").val("");
+            $("#url").val("");
+            $("#text").val("");
+        });
+
+        // //最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
+        // onChildAdded(dbRef,function(data){
+        //     const msg=data.val();
+        //     const key=data.key;
+        //     // let h="<p>";
+        //     //     h+=msg.uname;
+        //     //     h+="<br>";
+        //     //     h+=msg.text;
+        //     //     h+="</p>";
+        //     //     $("#output").append(h);
+        //         let h=`
+        //             <h1 class="custom-h1">
+        //                 <p>${msg.uname}</p>
+        //                 <p>${msg.url}</p>
+        //                 <p>${msg.text}</p>
+        //             </h1>
+        //         `
+        //         $("#output").append(h);
+        // })
+
+        // // トリプルクリックでデータ削除
+        // $("#output").on("click", ".custom-h1", function() {
+        //     if (event.detail === 3) {
+        //         const key = $(this).data("key");
+        //     remove(ref(db, "chat/" + key));
+        //     $(this).remove();
+        //     }
+        // });
+
+        // 最初にデータ取得＆onSnapshotでリアルタイムにデータを取得
+onChildAdded(dbRef, function(data) {
+  const msg = data.val();
+  const key = data.key;
+  let h = `
+    <h1 class="custom-h1" data-key="${key}">
+      <p>${msg.uname}</p>
+      <p>${msg.url}</p>
+      <p>${msg.text}</p>
+    </h1>
+  `;
+  $("#output").append(h);
+});
+
+// データ削除時のリアルタイム更新
+onChildRemoved(dbRef, function(data) {
+  const key = data.key;
+  $(".custom-h1[data-key='" + key + "']").remove();
+});
+
+// ファイブクリックでデータ削除
+$("#output").on("click", ".custom-h1", function() {
+  if (event.detail === 5) {
+    const key = $(this).data("key");
+    remove(ref(db, "chat/" + key)); 
+    $(this).remove();
+  }
+});
+
+//###############################################
+//GoogleAuth用
+//###############################################
+const provider = new GoogleAuthProvider();
+provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+const auth = getAuth();
+
+//###############################################
+//Logout処理
+//###############################################
+$("#out").on("click", function () {
+    // signInWithRedirect(auth, provider);
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        _redirect();
+    }).catch((error) => {
+        // An error happened.
+        console.error(error);
+    });
+});
+
+//###############################################
+//Login画面へリダイレクト(関数作成)
+//###############################################
+function _redirect(){
+    location.href="login.html";
+}   
+
+    </script>
+</body>
+
+</html>
